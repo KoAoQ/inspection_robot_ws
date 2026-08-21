@@ -15,7 +15,8 @@ find_package(diagnostic_msgs REQUIRED)
 find_package(inspection_robot_interfaces REQUIRED)
 find_package(serial REQUIRED)
 
-add_library(${PROJECT_NAME}_core
+add_library(
+  ${PROJECT_NAME}_core
   src/serial_frame_router.cpp
   src/motion_protocol.cpp
   src/ultrasonic_protocol.cpp
@@ -27,18 +28,26 @@ add_library(${PROJECT_NAME}_core
   src/control_state.cpp
   src/hardware_state.cpp
   src/base_io_worker.cpp)
-target_include_directories(${PROJECT_NAME}_core PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+target_include_directories(
+  ${PROJECT_NAME}_core PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                              $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(${PROJECT_NAME}_core serial)
 
 add_executable(base_driver_node src/base_driver_node.cpp src/main.cpp)
 target_link_libraries(base_driver_node ${PROJECT_NAME}_core)
-ament_target_dependencies(base_driver_node
-  rclcpp geometry_msgs nav_msgs sensor_msgs std_msgs std_srvs diagnostic_msgs
+ament_target_dependencies(
+  base_driver_node
+  rclcpp
+  geometry_msgs
+  nav_msgs
+  sensor_msgs
+  std_msgs
+  std_srvs
+  diagnostic_msgs
   inspection_robot_interfaces)
 
-install(TARGETS ${PROJECT_NAME}_core base_driver_node
+install(
+  TARGETS ${PROJECT_NAME}_core base_driver_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})

@@ -4,6 +4,7 @@
 #include <deque>
 #include <mutex>
 #include <optional>
+
 #include "inspection_robot_base/frame_types.hpp"
 namespace inspection_robot_base {
 enum class DeviceRequestType : std::uint8_t { kRecharge, kMcuSafety, kLight };
@@ -20,17 +21,18 @@ struct ControlSnapshot {
   std::uint64_t reset_seq{0};
 };
 class SharedControlState {
-public:
-  void submitVelocity(const VelocityCommand & command);
+ public:
+  void submitVelocity(const VelocityCommand& command);
   void setEmergencyStop(bool active);
   void requestReset();
-  void enqueueDeviceRequest(const DeviceRequest & request);
+  void enqueueDeviceRequest(const DeviceRequest& request);
   ControlSnapshot snapshot() const;
   std::deque<DeviceRequest> drainDeviceRequests();
   void invalidateCommand();
-private:
+
+ private:
   mutable std::mutex mutex_;
   ControlSnapshot state_;
   std::deque<DeviceRequest> device_requests_;
 };
-}
+}  // namespace inspection_robot_base

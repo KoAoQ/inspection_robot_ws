@@ -1,4 +1,17 @@
-<?xml version="1.0"?><package format="3"><name>inspection_robot_localization</name><version>0.3.0</version><description>Local odometry fusion and odom to base_footprint TF ownership.</description><maintainer email="maintainer@example.com">inspection_robot</maintainer><license>Proprietary</license><buildtool_depend>ament_cmake</buildtool_depend><exec_depend>robot_localization</exec_depend><exec_depend>launch_ros</exec_depend><exec_depend>ament_index_python</exec_depend>
+<?xml version="1.0"?>
+<package format="3">
+  <name>inspection_robot_localization</name>
+  <version>0.3.0</version>
+  <description>Local odometry fusion and odom to base_footprint TF ownership.</description>
+  <maintainer email="maintainer@example.com">inspection_robot</maintainer>
+  <license>Proprietary</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
-  <export><build_type>ament_cmake</build_type></export></package>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

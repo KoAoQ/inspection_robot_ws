@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+
 #include "inspection_robot_base/frame_types.hpp"
 namespace inspection_robot_base {
 struct MotionCommandContext {
@@ -11,11 +12,13 @@ struct MotionCommandContext {
   std::uint8_t reserved_byte{0};
 };
 class MotionProtocol {
-public:
+ public:
   static constexpr std::size_t kTxFrameSize = 11;
   using TxFrame = std::array<std::uint8_t, kTxFrameSize>;
-  static std::optional<MotionFeedback> decode(const ValidatedFrame & frame);
-  static std::optional<TxFrame> encodeVelocity(double vx, double vy, double wz,
-                                                MotionCommandContext context = {});
+  static std::optional<MotionFeedback> decode(const ValidatedFrame& frame);
+  static std::optional<TxFrame> encodeVelocity(double vx,
+                                               double vy,
+                                               double wz,
+                                               MotionCommandContext context = {});
 };
-}
+}  // namespace inspection_robot_base

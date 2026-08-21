@@ -2,12 +2,56 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="inspection_robot_s200">
   <!-- Canonical transform source. Values are initial engineering estimates derived from the S200 reference configuration. Verify on the physical robot before navigation/safety commissioning. -->
   <link name="base_footprint"/>
-  <link name="base_link"><visual><origin xyz="0 0 0.06"/><geometry><box size="0.46 0.38 0.12"/></geometry></visual><collision><origin xyz="0 0 0.06"/><geometry><box size="0.46 0.38 0.12"/></geometry></collision></link>
-  <joint name="base_footprint_to_base_link" type="fixed"><parent link="base_footprint"/><child link="base_link"/><origin xyz="0 0 0.078" rpy="0 0 0"/></joint>
-  <link name="gyro_link"/><joint name="base_to_gyro" type="fixed"><parent link="base_link"/><child link="gyro_link"/><origin xyz="0 0 0" rpy="0 0 0"/></joint>
-  <link name="laser_link"/><joint name="base_to_laser" type="fixed"><parent link="base_footprint"/><child link="laser_link"/><origin xyz="0.08874 0.00067 0.11102" rpy="0 0 0"/></joint>
-  <link name="camera_link"/><joint name="base_to_camera" type="fixed"><parent link="base_footprint"/><child link="camera_link"/><origin xyz="0.16578 0.00095 0.1682" rpy="0 0 0"/></joint>
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.06"/>
+      <geometry>
+        <box size="0.46 0.38 0.12"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.06"/>
+      <geometry>
+        <box size="0.46 0.38 0.12"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.078" rpy="0 0 0"/>
+  </joint>
+  <link name="gyro_link"/>
+  <joint name="base_to_gyro" type="fixed">
+    <parent link="base_link"/>
+    <child link="gyro_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <link name="laser_link"/>
+  <joint name="base_to_laser" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="laser_link"/>
+    <origin xyz="0.08874 0.00067 0.11102" rpy="0 0 0"/>
+  </joint>
+  <link name="camera_link"/>
+  <joint name="base_to_camera" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="camera_link"/>
+    <origin xyz="0.16578 0.00095 0.1682" rpy="0 0 0"/>
+  </joint>
   <!-- Ultrasonic transforms are intentionally centralized here. The zero defaults MUST be measured before safety commissioning. -->
-  <xacro:macro name="ultra" params="name y yaw"><link name="${name}"/><joint name="${name}_joint" type="fixed"><parent link="base_link"/><child link="${name}"/><origin xyz="0.20 ${y} 0.03" rpy="0 0 ${yaw}"/></joint></xacro:macro>
-  <xacro:ultra name="ultrasonic_a_link" y="0.14" yaw="0.35"/><xacro:ultra name="ultrasonic_b_link" y="0.05" yaw="0.10"/><xacro:ultra name="ultrasonic_c_link" y="-0.05" yaw="-0.10"/><xacro:ultra name="ultrasonic_d_link" y="-0.14" yaw="-0.35"/><xacro:ultra name="ultrasonic_e_link" y="0.0" yaw="3.14159"/><xacro:ultra name="ultrasonic_f_link" y="0.0" yaw="0.0"/>
+  <xacro:macro name="ultra" params="name y yaw">
+    <link name="${name}"/>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="0.20 ${y} 0.03" rpy="0 0 ${yaw}"/>
+    </joint>
+  </xacro:macro>
+  <xacro:ultra name="ultrasonic_a_link" y="0.14" yaw="0.35"/>
+  <xacro:ultra name="ultrasonic_b_link" y="0.05" yaw="0.10"/>
+  <xacro:ultra name="ultrasonic_c_link" y="-0.05" yaw="-0.10"/>
+  <xacro:ultra name="ultrasonic_d_link" y="-0.14" yaw="-0.35"/>
+  <xacro:ultra name="ultrasonic_e_link" y="0.0" yaw="3.14159"/>
+  <xacro:ultra name="ultrasonic_f_link" y="0.0" yaw="0.0"/>
 </robot>

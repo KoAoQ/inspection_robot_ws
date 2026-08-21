@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <memory>
 #include <thread>
+
 #include "inspection_robot_base/base_fault_manager.hpp"
 #include "inspection_robot_base/byte_transport.hpp"
 #include "inspection_robot_base/control_state.hpp"
@@ -27,7 +28,7 @@ struct BaseIoConfig {
   OdometryScale odom_scale{};
 };
 class BaseIoWorker {
-public:
+ public:
   BaseIoWorker(std::unique_ptr<IByteTransport> transport,
                std::shared_ptr<SharedControlState> control,
                std::shared_ptr<HardwareStateStore> hardware,
@@ -35,21 +36,24 @@ public:
   ~BaseIoWorker();
   void start();
   void stop();
-  bool running() const { return running_; }
+  bool running() const {
+    return running_;
+  }
   // Exposed as a pure policy helper for unit tests and design review.
-  static VelocityCommand chooseOutput(const VelocityCommand & requested, bool can_move);
-private:
+  static VelocityCommand chooseOutput(const VelocityCommand& requested, bool can_move);
+
+ private:
   using Clock = std::chrono::steady_clock;
   void run();
   bool connectAndHandshake(Clock::time_point now);
   void disconnectForFault(FaultCode reason);
-  bool sendMotion(const VelocityCommand & command);
+  bool sendMotion(const VelocityCommand& command);
   bool sendZero();
   bool processDeviceRequests();
   void readAndProcess(Clock::time_point now);
-  void processFrame(const ValidatedFrame & frame, Clock::time_point now);
-  static bool finite(const VelocityCommand & command);
-  VelocityCommand clamp(const VelocityCommand & command) const;
+  void processFrame(const ValidatedFrame& frame, Clock::time_point now);
+  static bool finite(const VelocityCommand& command);
+  VelocityCommand clamp(const VelocityCommand& command) const;
   void refreshPublishedSnapshot(Clock::time_point now);
   std::unique_ptr<IByteTransport> transport_;
   std::shared_ptr<SharedControlState> control_;
@@ -66,4 +70,4 @@ private:
   std::uint64_t seen_command_seq_{0}, seen_reset_seq_{0};
   VelocityCommand latest_command_{};
 };
-}
+}  // namespace inspection_robot_base
