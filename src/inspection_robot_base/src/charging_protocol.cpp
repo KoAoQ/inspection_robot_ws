@@ -1,0 +1,2 @@
+#include "inspection_robot_base/charging_protocol.hpp"
+namespace inspection_robot_base { std::optional<ChargingFeedback> ChargingProtocol::decode(const ValidatedFrame& f){if(f.type()!=FrameType::kCharging||f.bytes().size()!=8)return std::nullopt;const auto& b=f.bytes();std::uint16_t raw=(static_cast<std::uint16_t>(b[1])<<8U)|b[2];ChargingFeedback o;o.current_a=raw/1000.0;o.infrared_state=b[3];o.charging=b[4]!=0;o.charge_mode_set=b[5]!=0;return o;} }

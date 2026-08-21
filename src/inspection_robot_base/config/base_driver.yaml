@@ -1,0 +1,28 @@
+inspection_robot_base:
+  ros__parameters:
+    serial.port: /dev/inspection_robot_controller
+    serial.baud_rate: 115200
+    serial.timeout_ms: 20
+    serial.reconnect_period_ms: 1000
+    io.loop_hz: 50.0
+    safety.command_timeout_ms: 500
+    safety.feedback_timeout_ms: 300
+    safety.first_feedback_timeout_ms: 1000
+    limits.max_vx: 0.50
+    limits.max_vy: 0.00
+    limits.max_wz: 2.00
+    mcu.auto_enable_safety: true
+    mcu.allow_safety_disable: false
+    # IMPORTANT: this byte is the legacy motion-frame reserved byte, not the 0xB0/0xB1 config command.
+    # Keep 0 until the STM32 protocol is bench-verified.
+    mcu.motion_reserved_byte: 0
+    odom.scale_x: 1.0
+    odom.scale_y: 1.0
+    odom.scale_yaw_positive: 1.0
+    odom.scale_yaw_negative: 1.0
+    frames.odom: odom
+    frames.base: base_footprint
+    frames.imu: gyro_link
+    ultrasonic.field_of_view: 0.52
+    ultrasonic.min_range: 0.02
+    ultrasonic.max_range: 5.3

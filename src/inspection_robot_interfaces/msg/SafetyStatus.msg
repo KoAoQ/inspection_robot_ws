@@ -1,0 +1,10 @@
+std_msgs/Header header
+bool healthy
+bool emergency_stop
+bool ultrasonic_healthy
+bool laser_healthy
+bool obstacle_stop
+bool command_valid
+float32 nearest_ultrasonic_m
+float32 nearest_laser_m
+string reason

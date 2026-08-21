@@ -1,0 +1,11 @@
+inspection_robot_safety:
+  ros__parameters:
+    ultrasonic.hard_stop_distance: 0.15
+    ultrasonic.slow_distance: 0.40
+    ultrasonic.stale_timeout_ms: 300
+    ultrasonic.fail_closed: true
+    command.stale_timeout_ms: 500
+    laser.enabled: false
+    laser.hard_stop_distance: 0.18
+    laser.stale_timeout_ms: 300
+    laser.front_half_angle_rad: 0.52

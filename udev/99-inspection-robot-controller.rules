@@ -1,0 +1,2 @@
+# TEMPLATE ONLY. Replace idVendor/idProduct with the real controller USB IDs from `udevadm info` or `lsusb`.
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="XXXX", ATTRS{idProduct}=="YYYY", SYMLINK+="inspection_robot_controller", MODE="0660", GROUP="dialout"

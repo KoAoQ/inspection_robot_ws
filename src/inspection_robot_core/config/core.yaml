@@ -1,0 +1,4 @@
+inspection_robot_velocity_manager:
+  ros__parameters:
+    initial_mode: STOP
+    source_timeout_ms: 500

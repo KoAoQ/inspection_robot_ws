@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>inspection_robot_base</name>
+  <version>0.3.0</version>
+  <description>S200-compatible base hardware driver with single-owner serial I/O and fail-safe motion gating.</description>
+  <maintainer email="maintainer@example.com">inspection_robot</maintainer>
+  <license>Proprietary</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>diagnostic_msgs</depend>
+  <depend>inspection_robot_interfaces</depend>
+  <depend>serial</depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>
