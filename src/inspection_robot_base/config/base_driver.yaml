@@ -1,6 +1,6 @@
 inspection_robot_base:
   ros__parameters:
-    serial.port: /dev/inspection_robot_controller
+    serial.port: /dev/wheeltec_controller
     serial.baud_rate: 115200
     serial.timeout_ms: 20
     serial.reconnect_period_ms: 1000
@@ -16,7 +16,7 @@ inspection_robot_base:
     # IMPORTANT: this byte is the legacy motion-frame reserved byte, not the 0xB0/0xB1 config command.
     # Keep 0 until the STM32 protocol is bench-verified.
     mcu.motion_reserved_byte: 0
-    odom.scale_x: 1.0
+    odom.scale_x: 1.030
     odom.scale_y: 1.0
     odom.scale_yaw_positive: 1.0
     odom.scale_yaw_negative: 1.0

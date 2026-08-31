@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>inspection_robot_maps</name>
+  <version>0.1.0</version>
+  <description>Installed occupancy-grid maps for inspection robot localization and navigation.</description>
+  <maintainer email="maintainer@example.com">inspection_robot</maintainer>
+  <license>Proprietary</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

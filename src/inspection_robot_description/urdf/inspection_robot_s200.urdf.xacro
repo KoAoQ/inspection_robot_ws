@@ -1,50 +1,115 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="inspection_robot_s200">
-  <!-- Canonical transform source. Values are initial engineering estimates derived from the S200 reference configuration. Verify on the physical robot before navigation/safety commissioning. -->
+  <!-- Visual meshes come from WheelTec's S200_4wd_robot.urdf. -->
+  <!-- Commissioned sensor transforms remain authoritative for mapping and safety. -->
+  <material name="wheeltec_blue"><color rgba="0.74118 0.90196 0.95686 1"/></material>
+  <material name="wheeltec_dark"><color rgba="0.37647 0.37647 0.37647 1"/></material>
+  <material name="wheeltec_white"><color rgba="1 1 1 1"/></material>
+  <xacro:property name="mesh_dir" value="package://inspection_robot_description/meshes/S200_4wd_robot_meshes"/>
+  <!-- Measured horizontal envelope relative to the four-wheel geometric center. -->
+  <!-- +x: front, +y: left. Nav2 baseline: [[-0.320,-0.325],[-0.320,0.325],[0.330,0.325],[0.330,-0.325]]. -->
+  <xacro:property name="footprint_front" value="0.330"/>
+  <xacro:property name="footprint_rear" value="0.320"/>
+  <xacro:property name="footprint_left" value="0.325"/>
+  <xacro:property name="footprint_right" value="0.325"/>
+  <xacro:property name="footprint_center_x" value="${(footprint_front - footprint_rear) / 2.0}"/>
+  <xacro:property name="footprint_length" value="${footprint_front + footprint_rear}"/>
+  <xacro:property name="footprint_width" value="${footprint_left + footprint_right}"/>
+
   <link name="base_footprint"/>
   <link name="base_link">
     <visual>
-      <origin xyz="0 0 0.06"/>
-      <geometry>
-        <box size="0.46 0.38 0.12"/>
-      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="${mesh_dir}/base_link.STL"/></geometry>
+      <material name="wheeltec_blue"/>
     </visual>
     <collision>
-      <origin xyz="0 0 0.06"/>
-      <geometry>
-        <box size="0.46 0.38 0.12"/>
-      </geometry>
+      <origin xyz="${footprint_center_x} 0 0.06" rpy="0 0 0"/>
+      <geometry><box size="${footprint_length} ${footprint_width} 0.12"/></geometry>
     </collision>
   </link>
   <joint name="base_footprint_to_base_link" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
+    <parent link="base_footprint"/><child link="base_link"/>
     <origin xyz="0 0 0.078" rpy="0 0 0"/>
   </joint>
+
+  <!-- Fixed wheel joints publish complete TF without requiring /joint_states. -->
+  <xacro:macro name="s200_wheel" params="name xyz material">
+    <link name="${name}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="${mesh_dir}/${name}_wheel_link.STL"/></geometry>
+        <material name="${material}"/>
+      </visual>
+    </link>
+    <joint name="${name}_wheel_joint" type="fixed">
+      <parent link="base_link"/><child link="${name}_wheel_link"/>
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+  <xacro:s200_wheel name="lf" xyz="0.176 0.2942 0.037" material="wheeltec_dark"/>
+  <xacro:s200_wheel name="lb" xyz="-0.176 0.2942 0.037" material="wheeltec_dark"/>
+  <xacro:s200_wheel name="rb" xyz="-0.176 -0.2942 0.037" material="wheeltec_dark"/>
+  <xacro:s200_wheel name="rf" xyz="0.176 -0.2942 0.037" material="wheeltec_white"/>
+
+  <link name="controller_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="${mesh_dir}/controller_link.STL"/></geometry>
+      <material name="wheeltec_blue"/>
+    </visual>
+  </link>
+  <joint name="controller_joint" type="fixed">
+    <parent link="base_link"/><child link="controller_link"/>
+    <origin xyz="-0.015598 0.033015 0.16714" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mushroom_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="${mesh_dir}/mushroom_link.STL"/></geometry>
+      <material name="wheeltec_blue"/>
+    </visual>
+  </link>
+  <joint name="mushroom_joint" type="fixed">
+    <parent link="base_link"/><child link="mushroom_link"/>
+    <origin xyz="-0.07094 0 0.45681" rpy="0 0 0"/>
+  </joint>
+
   <link name="gyro_link"/>
   <joint name="base_to_gyro" type="fixed">
-    <parent link="base_link"/>
-    <child link="gyro_link"/>
+    <parent link="base_link"/><child link="gyro_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
-  <link name="laser_link"/>
+
+  <link name="laser_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="${mesh_dir}/laser_link.STL"/></geometry>
+      <material name="wheeltec_white"/>
+    </visual>
+  </link>
   <joint name="base_to_laser" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="laser_link"/>
+    <parent link="base_footprint"/><child link="laser_link"/>
     <origin xyz="0.08874 0.00067 0.11102" rpy="0 0 0"/>
   </joint>
-  <link name="camera_link"/>
+
+  <link name="camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="${mesh_dir}/camera_link.STL"/></geometry>
+      <material name="wheeltec_white"/>
+    </visual>
+  </link>
   <joint name="base_to_camera" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="camera_link"/>
+    <parent link="base_footprint"/><child link="camera_link"/>
     <origin xyz="0.16578 0.00095 0.1682" rpy="0 0 0"/>
   </joint>
-  <!-- Ultrasonic transforms are intentionally centralized here. The zero defaults MUST be measured before safety commissioning. -->
+
   <xacro:macro name="ultra" params="name y yaw">
     <link name="${name}"/>
     <joint name="${name}_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="${name}"/>
+      <parent link="base_link"/><child link="${name}"/>
       <origin xyz="0.20 ${y} 0.03" rpy="0 0 ${yaw}"/>
     </joint>
   </xacro:macro>

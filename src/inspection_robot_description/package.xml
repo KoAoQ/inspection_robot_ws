@@ -2,7 +2,7 @@
 <package format="3">
   <name>inspection_robot_description</name>
   <version>0.3.0</version>
-  <description>Canonical TF and simplified URDF for the inspection robot S200 base.</description>
+  <description>Canonical TF and WheelTec S200 visual model for the inspection robot.</description>
   <maintainer email="maintainer@example.com">inspection_robot</maintainer>
   <license>Proprietary</license>
   <buildtool_depend>ament_cmake</buildtool_depend>

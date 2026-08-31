@@ -17,6 +17,27 @@ geometry_msgs::msg::Quaternion yawQuaternion(double yaw) {
 std::uint8_t toByte(float v) {
   return static_cast<std::uint8_t>(std::clamp(v, 0.0f, 1.0f) * 255.0f);
 }
+void setPlanarOdometryCovariance(nav_msgs::msg::Odometry& odom, bool stationary) {
+  // Baseline values carried over from the matching WHEELTEC S200 driver. Keep
+  // only the diagonal terms: the legacy matrix contains an asymmetric unused
+  // off-diagonal entry that is not a valid covariance.
+  const double planar_position = stationary ? 1e-9 : 1e-3;
+  const double yaw = stationary ? 1e-9 : 1e3;
+
+  odom.pose.covariance[0] = planar_position;
+  odom.pose.covariance[7] = 1e-3;
+  odom.pose.covariance[14] = 1e6;
+  odom.pose.covariance[21] = 1e6;
+  odom.pose.covariance[28] = 1e6;
+  odom.pose.covariance[35] = yaw;
+
+  odom.twist.covariance[0] = planar_position;
+  odom.twist.covariance[7] = 1e-3;
+  odom.twist.covariance[14] = 1e6;
+  odom.twist.covariance[21] = 1e6;
+  odom.twist.covariance[28] = 1e6;
+  odom.twist.covariance[35] = yaw;
+}
 }  // namespace
 BaseDriverNode::BaseDriverNode(const rclcpp::NodeOptions& options)
     : Node("inspection_robot_base", options) {
@@ -151,6 +172,9 @@ void BaseDriverNode::publishMotion(const HardwareSnapshot& s) {
   o.twist.twist.linear.x = s.motion.vx;
   o.twist.twist.linear.y = s.motion.vy;
   o.twist.twist.angular.z = s.motion.wz;
+  const bool stationary =
+      s.motion.vx == 0.0 && s.motion.vy == 0.0 && s.motion.wz == 0.0;
+  setPlanarOdometryCovariance(o, stationary);
   odom_pub_->publish(o);
   sensor_msgs::msg::Imu imu;
   imu.header.stamp = stamp;
@@ -159,6 +183,11 @@ void BaseDriverNode::publishMotion(const HardwareSnapshot& s) {
   imu.angular_velocity.x = s.motion.gyro_x;
   imu.angular_velocity.y = s.motion.gyro_y;
   imu.angular_velocity.z = s.motion.gyro_z;
+  // The planar filter uses only yaw rate. The matching WHEELTEC driver marks
+  // roll/pitch rates as untrusted and yaw rate as the usable measurement.
+  imu.angular_velocity_covariance[0] = 1e6;
+  imu.angular_velocity_covariance[4] = 1e6;
+  imu.angular_velocity_covariance[8] = 1e-6;
   imu.linear_acceleration.x = s.motion.accel_x;
   imu.linear_acceleration.y = s.motion.accel_y;
   imu.linear_acceleration.z = s.motion.accel_z;

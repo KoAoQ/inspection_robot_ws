@@ -1,0 +1,15 @@
+depth_cloud_filter:
+  ros__parameters:
+    input_topic: "/camera/depth/points"
+    output_topic: "/camera/depth/points_filtered"
+    target_frame: "base_footprint"
+    max_publish_rate: 12.0
+    transform_timeout_sec: 0.10
+    voxel_leaf_size: 0.05
+    min_x: 0.10
+    max_x: 3.00
+    min_y: -2.00
+    max_y: 2.00
+    min_z: 0.03
+    max_z: 1.60
+    min_points: 50
