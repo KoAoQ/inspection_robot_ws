@@ -8,7 +8,7 @@ inspection_robot_base:
     safety.command_timeout_ms: 500
     safety.feedback_timeout_ms: 300
     safety.first_feedback_timeout_ms: 1000
-    limits.max_vx: 0.50
+    limits.max_vx: 1.20
     limits.max_vy: 0.00
     limits.max_wz: 2.00
     mcu.auto_enable_safety: true

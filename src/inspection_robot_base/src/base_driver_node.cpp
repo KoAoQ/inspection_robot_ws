@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <limits>
 #include <utility>
 
 #include "inspection_robot_base/serial_transport.hpp"
@@ -208,7 +209,12 @@ void BaseDriverNode::publishUltrasonic(const HardwareSnapshot& s) {
     r.field_of_view = ultrasonic_fov_;
     r.min_range = ultrasonic_min_;
     r.max_range = ultrasonic_max_;
-    r.range = static_cast<float>(s.ultrasonic.ranges_m[i]);
+    const double range_m = s.ultrasonic.ranges_m[i];
+    if (std::isfinite(range_m) && range_m > ultrasonic_max_) {
+      r.range = std::numeric_limits<float>::infinity();
+    } else {
+      r.range = static_cast<float>(range_m);
+    }
     range_pubs_[i]->publish(r);
   }
 }
